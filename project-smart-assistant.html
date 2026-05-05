@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Smart Election Assistant - An AI-powered interactive platform to guide users through the election process." />
+  <title>Smart Election Assistant - Project Details</title>
+  <link rel="icon" type="image/png" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🤖</text></svg>">
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* Reuse global tokens from index.html */
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    :root {
+      --bg: #f8fafc;
+      --bg2: #f1f5f9;
+      --surface: rgba(255, 255, 255, 0.7);
+      --border: rgba(203, 213, 225, 0.6);
+      --text: #0f172a;
+      --text2: #475569;
+      --text3: #94a3b8;
+      --accent: #3b82f6;
+      --accent2: #2563eb;
+      --transition: .4s cubic-bezier(.4, 0, .2, 1);
+      --glass-bg: rgba(255, 255, 255, 0.7);
+    }
+
+    [data-theme="dark"] {
+      --bg: #020617;
+      --bg2: #0f172a;
+      --surface: rgba(30, 41, 59, 0.6);
+      --border: rgba(51, 65, 85, 0.6);
+      --text: #f8fafc;
+      --text2: #cbd5e1;
+      --text3: #64748b;
+      --accent: #60a5fa;
+      --accent2: #3b82f6;
+      --glass-bg: rgba(15, 23, 42, 0.6);
+    }
+
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background var(--transition), color var(--transition);
+      line-height: 1.6;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+      border-radius: 12px;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      backdrop-filter: blur(16px);
+      background: var(--glass-bg);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .btn-back {
+      padding: 0.5rem 1rem;
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      color: var(--text);
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-back:hover {
+      background: var(--accent);
+      color: white;
+      border-color: var(--accent);
+    }
+
+    /* ── INTERACTIVE CANVAS PARTICLES ── */
+    #particles-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      pointer-events: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 8rem 2rem 4rem;
+    }
+
+    /* Header */
+    .project-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .project-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .project-tags {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 0.4rem 1rem;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    /* Links */
+    .project-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    .link-btn {
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    .link-primary {
+      background: var(--accent);
+      color: white;
+    }
+
+    .link-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+    }
+
+    .link-outline {
+      border: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .link-outline:hover {
+      border-color: var(--text);
+      transform: translateY(-3px);
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .gallery-img {
+      width: 100%;
+      height: 350px;
+      object-fit: contain;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    @media(max-width: 768px) {
+      .gallery {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Content */
+    .content-section {
+      margin-bottom: 3rem;
+    }
+
+    .content-section h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .content-section p {
+      font-size: 1.1rem;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .content-section ul {
+      padding-left: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .content-section li {
+      font-size: 1.1rem;
+      color: var(--text2);
+      line-height: 1.8;
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- INTERACTIVE PARTICLES BACKGROUND -->
+  <canvas id="particles-canvas"></canvas>
+
+  <nav>
+    <div class="nav-logo">Sahil<span>.</span></div>
+    <a href="index.html" class="btn-back">← Back to Portfolio</a>
+  </nav>
+
+  <div class="container">
+    <div class="project-header">
+      <h1 class="project-title">Smart Election Assistant</h1>
+      <div class="project-tags">
+        <span class="tag">React.js</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">Gemini AI API</span>
+        <span class="tag">Tailwind CSS</span>
+      </div>
+      <div class="project-links">
+        <a href="#" class="link-btn link-primary" target="_blank">🚀 View Live Deployment</a>
+        <a href="https://github.com/SAhil-1436/smart-election-assistant-project.git" class="link-btn link-outline"
+          target="_blank">🐙 View GitHub Source</a>
+      </div>
+    </div>
+
+
+    <div class="gallery">
+      <img loading="lazy" class="gallery-img" src="chatbot.png">
+      <img loading="lazy" class="gallery-img" src="election.png">
+      <img loading="lazy" class="gallery-img" style="grid-column: 1 / -1; height: 450px;" src="dashboard.png">
+    </div>
+
+    <div class="content-section">
+      <h2>About the Project</h2>
+      <p>The Smart Election Assistant is an interactive and educational web application designed to simplify the complex
+        election process. It provides users with a clear, step-by-step understanding of election timelines and civic
+        responsibilities.</p>
+      <p>The standout feature of this project is the integration of the Gemini AI API, which powers an intelligent Chat
+        Assistant capable of answering nuanced queries about the electoral process in real-time.</p>
+    </div>
+
+    <div class="content-section">
+      <h2>Key Features</h2>
+      <ul>
+        <li><strong>Gemini-Powered Chat Assistant:</strong> Provides instant, context-aware answers to user questions
+          regarding voting, candidates, and election rules.</li>
+        <li><strong>Guidance Wizard:</strong> An interactive, step-by-step timeline helping voters understand milestones
+          (Registration, Campaigning, Voting Day).</li>
+        <li><strong>Voter Checklist & FAQ:</strong> Dedicated sections providing essential civic information and
+          frequently asked questions.</li>
+        <li><strong>Responsive UI:</strong> Built with modern frontend frameworks for a seamless mobile and desktop
+          experience.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    // ── INTERACTIVE CANVAS PARTICLES (Antigravity Style) ──
+    const canvas = document.getElementById('particles-canvas');
+    const ctx = canvas.getContext('2d');
+    let particlesArray;
+    let mouse = { x: null, y: null, radius: 150 };
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    window.addEventListener('mousemove', function (event) {
+      mouse.x = event.x;
+      mouse.y = event.y;
+    });
+    window.addEventListener('mouseout', function () {
+      mouse.x = undefined;
+      mouse.y = undefined;
+    });
+
+    class Particle {
+      constructor(x, y, directionX, directionY, size) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+        this.density = (Math.random() * 20) + 5;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        ctx.fillStyle = isDark ? 'rgba(96, 165, 250, 0.4)' : 'rgba(59, 130, 246, 0.4)';
+        ctx.fill();
+      }
+      update() {
+        if (this.x > canvas.width || this.x < 0) this.directionX = -this.directionX;
+        if (this.y > canvas.height || this.y < 0) this.directionY = -this.directionY;
+        if (mouse.x != null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            let forceDirectionX = dx / distance;
+            let forceDirectionY = dy / distance;
+            let maxDistance = mouse.radius;
+            let force = (maxDistance - distance) / maxDistance;
+            let directionX = forceDirectionX * force * this.density;
+            let directionY = forceDirectionY * force * this.density;
+            this.x -= directionX;
+            this.y -= directionY;
+          }
+        }
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+      }
+    }
+
+    function initParticles() {
+      particlesArray = [];
+      let numberOfParticles = (canvas.height * canvas.width) / 12000;
+      for (let i = 0; i < numberOfParticles; i++) {
+        let size = (Math.random() * 2) + 1;
+        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+        let directionX = (Math.random() * 1) - 0.5;
+        let directionY = (Math.random() * 1) - 0.5;
+        particlesArray.push(new Particle(x, y, directionX, directionY, size));
+      }
+    }
+
+    function connectParticles() {
+      let opacityValue = 1;
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      for (let a = 0; a < particlesArray.length; a++) {
+        for (let b = a; b < particlesArray.length; b++) {
+          let distance = ((particlesArray[a].x - particlesArray[b].x) * (particlesArray[a].x - particlesArray[b].x))
+            + ((particlesArray[a].y - particlesArray[b].y) * (particlesArray[a].y - particlesArray[b].y));
+          if (distance < (canvas.width / 8) * (canvas.height / 8)) {
+            opacityValue = 1 - (distance / 15000);
+            ctx.strokeStyle = isDark
+              ? `rgba(96, 165, 250, ${opacityValue * 0.15})`
+              : `rgba(59, 130, 246, ${opacityValue * 0.15})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
+            ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    function animateParticles() {
+      requestAnimationFrame(animateParticles);
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+      }
+      connectParticles();
+    }
+
+    initParticles();
+    animateParticles();
+  </script>
+</body>
+
+</html>
